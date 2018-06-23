@@ -22,6 +22,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        
     }
 
     /**
@@ -60,7 +61,7 @@ public class GUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Laboratorio#8Kenneth");
         arbolito.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         jScrollPane1.setViewportView(arbolito);
 
@@ -216,7 +217,7 @@ public class GUI extends javax.swing.JFrame {
     }
     if(nombres.contains(nombre) || nombres.equals("")== true){
         JOptionPane.showMessageDialog(this, "Nombre invalido.");
-    } else if(gg == 1){
+    } else if(gg > 0){
         String xetay = CB2.getSelectedItem().toString();
         DefaultComboBoxModel nuerv = (DefaultComboBoxModel) CB2.getModel();
         empleado juego = new empleado(nombre,id,password,xetay,Salary,puesto);
@@ -245,15 +246,16 @@ public class GUI extends javax.swing.JFrame {
         DefaultTreeModel modelo = (DefaultTreeModel) arbolito.getModel();
         DefaultMutableTreeNode raiz = (DefaultMutableTreeNode)modelo.getRoot();
         raiz.removeAllChildren();
-        DefaultMutableTreeNode guey;
+        
+        
         for (int i = 0; i < emples.size(); i++) {
             if(emples.get(i).getJefe().equals("")){
-                guey = new DefaultMutableTreeNode(emples.get(i));
+                DefaultMutableTreeNode guey = new DefaultMutableTreeNode();
+                raiz.add(recursiva(emples.get(i),guey));
             }
         }
-        
        
-        
+       modelo.reload();
         
     }//GEN-LAST:event_jButton2MouseClicked
     public boolean hasHijos(empleado x){
@@ -277,17 +279,19 @@ public class GUI extends javax.swing.JFrame {
     //Desde el mero mero un recursivo que revise si tiene hijos entonces que revise quienes so
     public DefaultMutableTreeNode recursiva(empleado x, DefaultMutableTreeNode y){
         if(hasHijos(x) != true){
-            y.add(new DefaultMutableTreeNode(x));
+            y = (new DefaultMutableTreeNode(x));
             return y;
         }else{
+            y = new DefaultMutableTreeNode(x);
             ArrayList<empleado> jue = getHijos(x);
             for (int i = 0; i < jue.size(); i++) {
+                y.add(recursiva(jue.get(i), y));
                 
             }
+            return y;
         }
     }
     
-    public 
     /**
      * @param args the command line arguments
      */
@@ -326,6 +330,7 @@ public class GUI extends javax.swing.JFrame {
     static int gg = 0;
     static ArrayList<empleado> emples = new ArrayList();
     static ArrayList<String> posiblesjefes = new ArrayList();
+    static DefaultMutableTreeNode ken;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CB2;
     private javax.swing.JTextField ID;
